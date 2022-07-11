@@ -4,67 +4,33 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-/**
- * struct Flag - struct containing flags to "turn on"
- * when a Flag specifier is passed to _printf()
- * @plus: Flag for the '+' character 
- * @space: Flag for the ' ' character
- * @hash: Flag for the '#' character
- */
-typedef struct flags
-{
-	int plus;
-	int space;
-	int hash;
-} flags_t;
-
-/**
- * struct printHandler - struct to choose the right function depending
- * on the format specifier passed to _printf()
- * @c: Format specifier
- * @f: Pointer to the correct printing function
- */
-typedef struct printHadler
-{
-	char c;
-	int (*f)(va_list ap, flags_t *f);
-} ph;
-
-/* print_num */
-int print_int(va_list 1, flags_t *f);
-void print_number(int n);
-int print_unsigned(va_list 1, flags_t *f);
-int count_digit(int i);
-
-/* converter */
-char *convert(unsigned long int num, int base, int lowercase);
-
-/* printf */
-int _printf(const char *format, ...);
-
-/* get_print */
-int (*get_print(char s))(va_list, flags_t *f);
-
-/* get_flag */
-int get_flag(char s, flag_t *f);
-
-/* print_alpha */
-int print_string(va_list 1, flags_t *f);
-int print_char(va_list 1, flags_t *f);
-
-/* write_funcs */
 int _putchar(char c);
 int _puts(char *str);
+int _printf(const char *format, ...);
+int print_char(va_list c);
+int print_string(va_list s);
+int print_dec(va_list d);
+int print_hex(va_list x);
+int print_HEX(va_list X);
+int print_octal(va_list o);
+int print_bin(va_list b);
+int print_unsigned(va_list u);
+int print_rot13(va_list R);
+int print_rev(va_list r);
+int print_int(va_list i);
+int print_S(va_list S);
+int print_p(va_list p);
 
-/* print_custom */
-int print_rot13(valist 1, flags_t *f);
-int print_rev(va_list 1, flags_t *f);
-int print_bigS(va_list 1, flags_t *f);
+/**
+ * struct code_format - structure format
+ * @sc: specifier
+ * @f: function associated
+ */
 
-/* print_address */
-int print_address(va_list 1, flags_t *f);
-
-/* print_percent */
-int print_percent(va_list 1, flags_t *f);
+typedef struct code_format
+{
+  char *sc;
+  int (*f)(va_list);
+} code_f;
 
 #endif
