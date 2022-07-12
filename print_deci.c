@@ -1,19 +1,23 @@
 #include "main.h"
 /**
 * author: Raheem and Zadrewells
-* print_unsig - function that prints unsigned number
-* @u: unsigned number
-* Descriptions: prints unsigned number with putchar
-* Return: size the output
+* print_dec - function that prints an decimal
+* @d: integer to print
+* Descriptions: prints digit with _putchar
+* Return: size the output text
 */
-int print_unsig(va_list u)
+int print_dec(va_list d)
 {
-	unsigned int len, powten, j, digit, n, num;
-	int count = 0;
+	int len, powten, j, digit, n, count = 0, num;
 
-	n = va_arg(u, unsigned int);
+	n = va_arg(d, int);
 	if (n != 0)
 	{
+		if (n < 0)
+		{
+			_putchar('-');
+			count++;
+		}
 		num = n;
 		len = 0;
 		while (num != 0)
@@ -27,7 +31,10 @@ int print_unsig(va_list u)
 		for (j = 1; j <= len; j++)
 		{
 			digit = n / powten;
-			_putchar(digit + '0');
+			if (n < 0)
+				_putchar((digit * -1) + 48);
+			else
+				_putchar(digit + '0');
 			count++;
 			n -= digit * powten;
 			powten /= 10;

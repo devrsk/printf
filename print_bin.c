@@ -1,36 +1,38 @@
+#include <stdarg.h>
+#include <stdio.h>
 #include "main.h"
+
 /**
-* author: Raheem and Zadrewells
-* print_unsig - function that prints unsigned number
-* @u: unsigned number
-* Descriptions: prints unsigned number with putchar
-* Return: size the output
+* authors Raheem and Zadrewells
+* print_bin - convert to binary
+* @b: number in decinal
+* Return: number of chars printed
 */
-int print_unsig(va_list u)
+int print_bin(va_list b)
 {
 	unsigned int len, powten, j, digit, n, num;
 	int count = 0;
 
-	n = va_arg(u, unsigned int);
+	n = va_arg(b, unsigned int);
 	if (n != 0)
 	{
 		num = n;
 		len = 0;
 		while (num != 0)
 		{
-			num /= 10;
+			num /= 2;
 			len++;
 		}
 		powten = 1;
 		for (j = 1; j <= len - 1; j++)
-			powten *= 10;
+			powten *= 2;
 		for (j = 1; j <= len; j++)
 		{
 			digit = n / powten;
 			_putchar(digit + '0');
 			count++;
 			n -= digit * powten;
-			powten /= 10;
+			powten /= 2;
 		}
 	}
 	else
