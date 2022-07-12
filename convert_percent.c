@@ -19,6 +19,7 @@ unsigned int convert_p(va_list args, buffer_t *output,
  * @output: A buffer_t struct containing a character array.
  *
  * Return: The number of bytes stored to the buffer.
+ * Author: Zadrewell
  */
 unsigned int convert_c(va_list args, buffer_t *output,
 		unsigned char flags, int wid, int prec, unsigned char len)
