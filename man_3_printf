@@ -1,5 +1,4 @@
-Author: Zadrewell
-.TH _PRINTF 3 "11 July 2022" "0.1" "ALX Group Task  0x10. C - _printf"
+.TH _PRINTF 3 "11 July 2022" "0.1" "ALX Group Task by Zadrewell & Raheem  0x10. C - _printf"
 
 .SH NAME
 .B _printf\fR \- formatted output conversion
