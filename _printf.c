@@ -1,89 +1,91 @@
 #include "main.h"
-void cleanup(va_list args, buffer_t *output);
-int run_printf(const char *format, va_list args, buffer_t *output);
-int _printf(const char *format, ...);
-
 /**
- * cleanup - Peforms cleanup operations for _printf.
- * @args: A va_list of arguments provided to _printf.
- * @output: A buffer_t struct.
+ * buffer - defines a local buffer of 1024 chars
+ * @s: buffer
+ * @x: char to be printed
+ * @index: actual position on buffer
+ * Return: return a function
  */
-void cleanup(va_list args, buffer_t *output)
+void buffer(char *s, char x, int *index)
 {
-	va_end(args);
-	write(1, output->start, output->len);
-	free_buffer(output);
-}
-
-/**
- * run_printf - Reads through the format string for _printf.
- * @format: Character string to print - may contain directives.
- * @output: A buffer_t struct containing a buffer.
- * @args: A va_list of arguments.
- *
- * Return: The number of characters stored to output.
- */
-int run_printf(const char *format, va_list args, buffer_t *output)
-{
-	int i, wid, prec, ret = 0;
-	char tmp;
-	unsigned char flags, len;
-	unsigned int (*f)(va_list, buffer_t *,
-			unsigned char, int, int, unsigned char);
-
-	for (i = 0; *(format + i); i++)
+	s[*index] = x;
+	*index = *index + 1;
+	if (*index == 1024)
 	{
-		len = 0;
-		if (*(format + i) == '%')
-		{
-			tmp = 0;
-			flags = handle_flags(format + i + 1, &tmp);
-			wid = handle_width(args, format + i + tmp + 1, &tmp);
-			prec = handle_precision(args, format + i + tmp + 1,
-					&tmp);
-			len = handle_length(format + i + tmp + 1, &tmp);
-
-			f = handle_specifiers(format + i + tmp + 1);
-			if (f != NULL)
-			{
-				i += tmp + 1;
-				ret += f(args, output, flags, wid, prec, len);
-				continue;
-			}
-			else if (*(format + i + tmp + 1) == '\0')
-			{
-				ret = -1;
-				break;
-			}
-		}
-		ret += _memcpy(output, (format + i), 1);
-		i += (len != 0) ? 1 : 0;
+		write(1, s, *index);
+		*index = 0;
 	}
-	cleanup(args, output);
-	return (ret);
 }
-
 /**
- * _printf - Outputs a formatted string.
- * @format: Character string to print - may contain directives.
- *
- * Return: The number of characters printed.
+ * getfunction - gets the function choose
+ * @c: char to find
+ * Return: return a function
+ */
+int (*getfunction(char c))(va_list a, char *s, int *index)
+{
+	int c1;
+	choose l[] = {
+		{'c', print_c}, {'s', print_s}, {'%', print_por}, {'i', print_id},
+		{'d', print_id}, {'b', print_bin}, {'u', print_u}, {'o', print_o},
+		{'x', print_x}, {'X', print_X}, {'S', print_S}, {'R', print_R},
+		{'r', print_r}, {'p', print_p}, {'\0', NULL}
+	};
+	for (c1 = 0; l[c1].c != '\0'; c1++)
+	{
+		if (c == l[c1].c)
+		{
+			return (l[c1].p);
+		}
+	}
+	return (NULL);
+}
+/**
+ * _printf - prints depends of the arguments.
+ * @format: s for string, c for char, d for decimals, i for integers,
+ * b for cast to binary, u for cast to unsigned decimal, o for print
+ * in octal, x for lowercase Hexadecimal, X for Uppercase Hexadecimal,
+ * p to print adresses
+ * Return: new string.
  */
 int _printf(const char *format, ...)
 {
-	buffer_t *output;
-	va_list args;
-	int ret;
+	int c1 = 0, w = 0, x = -1, (*f)(va_list, char *s, int *m);
+	int *index;
+	char *s;
+	va_list elements;
 
-	if (format == NULL)
+	va_start(elements, format);
+	s = malloc(1024);
+	index = &w;
+	if (!s)
 		return (-1);
-	output = init_buffer();
-	if (output == NULL)
-		return (-1);
-
-	va_start(args, format);
-
-	ret = run_printf(format, args, output);
-
-	return (ret);
+	if (format)
+	{
+		x = 0;
+		for (; format[c1] != '\0'; c1++, x++)
+		{
+			if (format[c1] != '%')
+				buffer(s, format[c1], index);
+			else if (format[c1] == '%' && format[c1 + 1] == '\0')
+			{
+				return (-1);
+			}
+			else if (format[c1] == '%' && format[c1 + 1] != '\0')
+			{
+				f = getfunction(format[c1 + 1]);
+				if (f)
+				{
+					x = (x + f(elements, s, index)) - 1;
+					c1++;
+				}
+				else
+					buffer(s, format[c1], index);
+			}
+		}
+	}
+	if (*index != 1024)
+		write(1, s, *index);
+	free(s);
+	va_end(elements);
+	return (x);
 }
