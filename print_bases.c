@@ -1,83 +1,84 @@
 #include "main.h"
 
-unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flags, int wid, int prec, unsigned char len);
-
 /**
- * Author: Zadrewells
- * convert_x - Converts an unsigned int argument to hex using abcdef
- *             and stores it to a buffer contained in a struct.
- * @args: A va_list pointing to the argument to be converted.
- * @flags: Flag modifiers.
- * @wid: A width modifier.
- * @prec: A precision modifier.
- * @len: A length modifier.
- * @output: A buffer_t struct containing a character array.
- *
- * Return: The number of bytes stored to the buffer.
+ * print_hex - prints a number in hexadecimal base,
+ * in lowercase
+ * @l: va_list arguments from _printf
+ * @f: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
  */
-unsigned int convert_x(va_list args, buffer_t *output,
-		unsigned char flags, int wid, int prec, unsigned char len)
+int print_hex(va_list l, flags_t *f)
 {
-	unsigned long int num;
-	unsigned int ret = 0;
-	char *lead = "0x";
+	unsigned int num = va_arg(l, unsigned int);
+	char *str = convert(num, 16, 1);
+	int count = 0;
 
-	if (len == LONG)
-		num = va_arg(args, unsigned long int);
-	else
-		num = va_arg(args, unsigned int);
-	if (len == SHORT)
-		num = (unsigned short)num;
-
-	if (HASH_FLAG == 1 && num != 0)
-		ret += _memcpy(output, lead, 2);
-
-	if (!(num == 0 && prec == 0))
-		ret += convert_ubase(output, num, "0123456789abcdef",
-				flags, wid, prec);
-
-	ret += print_neg_width(output, ret, flags, wid);
-
-	return (ret);
+	if (f->hash == 1 && str[0] != '0')
+		count += _puts("0x");
+	count += _puts(str);
+	return (count);
 }
 
 /**
- * convert_X - Converts an unsigned int argument to hex using ABCDEF
- *             and stores it to a buffer contained in a struct.
- * @args: A va_list pointing to the argument to be converted.
- * @flags: Flag modifiers.
- * @wid: A width modifier.
- * @prec: A precision modifier.
- * @len: A length modifier.
- * @output: A buffer_t struct containing a character array.
- *
- * Return: The number of bytes stored to the buffer.
+ * print_hex_big - prints a number in hexadecimal base,
+ * in uppercase
+ * @l: va_list arguments from _printf
+ * @f: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
  */
-unsigned int convert_X(va_list args, buffer_t *output,
-		unsigned char flags, int wid, int prec, unsigned char len)
+int print_hex_big(va_list l, flags_t *f)
 {
-	unsigned long int num;
-	unsigned int ret = 0;
-	char *lead = "0X";
+	unsigned int num = va_arg(l, unsigned int);
+	char *str = convert(num, 16, 0);
+	int count = 0;
 
-	if (len == LONG)
-		num = va_arg(args, unsigned long);
-	else
-		num = va_arg(args, unsigned int);
-	if (len == SHORT)
-		num = (unsigned short)num;
+	if (f->hash == 1 && str[0] != '0')
+		count += _puts("0X");
+	count += _puts(str);
+	return (count);
+}
 
-	if (HASH_FLAG == 1 && num != 0)
-		ret += _memcpy(output, lead, 2);
+/**
+ * print_binary - prints a number in base 2
+ * @l: va_list arguments from _printf
+ * @f: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_binary(va_list l, flags_t *f)
+{
+	unsigned int num = va_arg(l, unsigned int);
+	char *str = convert(num, 2, 0);
 
-	if (!(num == 0 && prec == 0))
-		ret += convert_ubase(output, num, "0123456789ABCDEF",
-				flags, wid, prec);
+	(void)f;
+	return (_puts(str));
+}
 
-	ret += print_neg_width(output, ret, flags, wid);
+/**
+ * print_octal - prints a number in base 8
+ * @l: va_list arguments from _printf
+ * @f: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_octal(va_list l, flags_t *f)
+{
+	unsigned int num = va_arg(l, unsigned int);
+	char *str = convert(num, 8, 0);
+	int count = 0;
 
-	return (ret);
+	if (f->hash == 1 && str[0] != '0')
+		count += _putchar('0');
+	count += _puts(str);
+	return (count);
 }
