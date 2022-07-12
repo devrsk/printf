@@ -1,28 +1,56 @@
 #include "main.h"
+
 /**
- * get_flag - turns on flags if _printf finds
- * @s: character that holds the flag specifier
- * @f: pointer to the struct flags in which we turn the flags on
- *
- * Return: 1 if a flag has been turned on, 0 otherwise
+ * print_reversed - Calls a function to reverse and print a string
+ * @arg: Argument passed to the function
+ * Return: The amount of characters printed
  */
-int get_flag(char s, flags_t *f)
+int print_reversed(va_list arg)
 {
-int i = 0;
-switch (s)
-{
-case '+':
-f->plus = 1;
-i = 1;
-break;
-case ' ':
-f->space = 1;
-i = 1;
-break;
-case '#':
-f->hash = 1;
-i = 1;
-break;
+	int len;
+	char *str;
+	char *ptr;
+
+	str = va_arg(arg, char *);
+	if (str == NULL)
+		return (-1);
+	ptr = rev_string(str);
+	if (ptr == NULL)
+		return (-1);
+	for (len = 0; ptr[len] != '\0'; len++)
+		_write_char(ptr[len]);
+	free(ptr);
+	return (len);
 }
-return (i);
+
+/**
+ * rot13 - Converts string to rot13
+ * @list: string to convert
+ * Return: converted string
+ */
+int rot13(va_list list)
+{
+	int i;
+	int x;
+	char *str;
+	char s[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char u[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+
+	str = va_arg(list, char *);
+	if (str == NULL)
+		return (-1);
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		for (x = 0; x <= 52; x++)
+		{
+			if (str[i] == s[x])
+			{
+				_write_char(u[x]);
+				break;
+			}
+		}
+		if (x == 53)
+			_write_char(str[i]);
+	}
+	return (i);
 }
