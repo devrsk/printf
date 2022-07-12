@@ -1,5 +1,5 @@
 #include "main.h"
-/** 
+/**
  * impresion_o - print the octal number
  * @a: array to be analized
  * @b: size of array

@@ -1,5 +1,5 @@
 #include "main.h"
-/** 
+/**
  * switch_H - select to print the HEXA char
  * @sum: num to analyze
  * @h: array
