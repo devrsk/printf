@@ -1,5 +1,6 @@
-
+#include "main.h"
 /**
+ * Author: Zadrewells
  * buffer - defines a local buffer of 1024 chars
  * @s: buffer
  * @x: char to be printed
