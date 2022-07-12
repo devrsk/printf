@@ -8,7 +8,7 @@
  */
 int print_R(va_list a, char *s, int *index)
 {
-	int i = 0, j, c;
+	int i = 0, j, c = 0;
 	char *str = va_arg(a, char *);
 	char arr[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char rot[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
