@@ -1,6 +1,5 @@
 #include "main.h"
 /**
- * Author: Zadrewlls
  * print_R - printRot13
  * @a: num to analyze
  * @s: array
