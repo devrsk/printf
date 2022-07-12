@@ -1,6 +1,5 @@
 #include "main.h"
-/**
- * author: Raheem and 
+/** 
  * print_c - print characters
  * @a: element of va_list type
  * @s: buffer
