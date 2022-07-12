@@ -38,4 +38,12 @@ int print_R(va_list a, char *s, int *index);
 int print_r(va_list a, char *s, int *index);
 int print_p(va_list a, char *s, int *index);
 
+/* Handlers */
+unsigned char handle_flags(const char *flags, char *index);
+unsigned char handle_length(const char *modifier, char *index);
+int handle_width(va_list args, const char *modifier, char *index);
+int handle_precision(va_list args, const char *modifier, char *index);
+unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
+		unsigned char, int, int, unsigned char);
+
 #endif
