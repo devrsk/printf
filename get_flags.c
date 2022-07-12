@@ -13,7 +13,7 @@ unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
  *
  * Return: If flag characters are matched - a corresponding value.
  *         Otherwise - 0.
- * Author: Zadrewells
+ * Author: Zadrewells & Raheem
  */
 unsigned char handle_flags(const char *flag, char *index)
 {
