@@ -22,18 +22,18 @@ int print_R(va_list a, char *s, int *index)
 			if (str[i] == arr[j])
 			{
 				buffer(s, rot[j], index);
-				j++;
+				c++;
 				break;
 			}
 		}
 		if (!arr[j])
 		{
 			buffer(s, str[i], index);
-			s++;
+			c++;
 		}
 		i++;
 	}
-	return (a);
+	return (c);
 }
 /**
  * print_r - print inverse string
